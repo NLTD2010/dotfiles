@@ -5,12 +5,13 @@ window {
 
 	.eww-bar {
 		background-color: $darker-background;
-		font-family: "Roboto";
+		// border-radius: 10px 10px 0px 0px;
+		font-family: "DM Sans";
 		font-weight: normal;
 	}
 	
 	.separator {
-		color: #1c2325;
+		color: $lighter-background;
 		font-size: 2em;
 	}
 }

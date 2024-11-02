@@ -2,11 +2,11 @@
 	(revealer :reveal escreen :duration "500ms" :transition "crossfade"
 		(box :orientation "h" :space-evenly "true"
 			(box :class "exit-screen" :orientation "h" :space-evenly "false" :halign "center" :valign "center"
-				(button :class "shutdown-btn" :onclick "systemctl poweroff" :tooltip "Shutdown" "")
-				(button :class "reboot-btn" :onclick "systemctl reboot" :tooltip "Reboot" "")
-				(button :class "sleep-btn" :onclick "sh $HOME/.config/eww/scripts/dashActions.sh suspend" :tooltip "Sleep" "")
-				(button :class "hibernate-btn" :onclick "sh $HOME/.config/eww/scripts/dashActions.sh hibernate" :tooltip "Hibernate" "")
-				(button :class "logout-btn" :onclick "bspc quit" :tooltip "Logout" "")
+				(button :class "shutdown-btn" :onclick "sh $HOME/.config/eww/scripts/exitScreenActions.sh poweroff" :tooltip "Shutdown" "")
+				(button :class "reboot-btn" :onclick "sh $HOME/.config/eww/scripts/exitScreenActions.sh reboot" :tooltip "Reboot" "")
+				(button :class "sleep-btn" :onclick "sh $HOME/.config/eww/scripts/exitScreenActions.sh suspend" :tooltip "Sleep" "")
+				(button :class "hibernate-btn" :onclick "sh $HOME/.config/eww/scripts/exitScreenActions.sh hibernate" :tooltip "Hibernate" "")
+				(button :class "logout-btn" :onclick "sh $HOME/.config/eww/scripts/exitScreenActions.sh logout" :tooltip "Logout" "")
 				; (button :class "lock-btn" :onclick "sh $HOME/.local/bin/lck" "")
 			)
 		)

@@ -1,8 +1,9 @@
 #!/bin/bash
 
-ARTIST=$(playerctl metadata --format '{{ artist }}')
-TITLE=$(playerctl metadata --format '{{ title }}')
-PLAYER=$(playerctl -p spotify,%any,firefox,chromium,brave,mpd status)
+PLAYERS="spotify,%any,firefox,chromium,brave,mpd"
+ARTIST=$(playerctl -p $PLAYERS metadata --format '{{ artist }}')
+TITLE=$(playerctl -p $PLAYERS metadata --format '{{ title }}')
+STATUS=$(playerctl -p $PLAYERS status)
 
 artist() {
 	# Check if $title is "Advertisement" cause fuck Spotify.
@@ -18,6 +19,8 @@ artist() {
 title() {
 	if [[ -z "$TITLE" ]]; then
 		echo "Nothing Playing"
+		
+		[[ -f "$HOME/.cache/eww-control-center.lock" ]] && $HOME/.local/bin/eww update mp=false
 	else
 		# Eww can't truncate Japanese and Chinese characters.
 		if [[ "$TITLE" =~ ^[一-龠]+|[ぁ-ゔ]+|[ァ-ヴー]+ ]]; then
@@ -25,36 +28,36 @@ title() {
 		else
 			echo $TITLE
 		fi
-		
+
+		[[ -f "$HOME/.cache/eww-control-center.lock" ]] && $HOME/.local/bin/eww update mp=true
 	fi
 }
 
 player_status() {
-	if [[ "$PLAYER" = "Playing" ]]; then
-		STATUS=""
-	elif [[ "$PLAYER" = "Paused" ]]; then
-		STATUS=""
+	if [[ "$STATUS" = "Playing" ]]; then
+		echo ""
+	elif [[ "$STATUS" = "Paused" ]]; then
+		echo ""
 	else
-		STATUS=""
+		echo ""
 	fi
-
-	echo $STATUS
 }
 
 player_status_text() {
-	PLAYER_NAME=$(playerctl -l)
-	PLAYER_NAME=$(echo $PLAYER_NAME | cut -d '.' -f 1)
+	# Author Notes:
+	# Deathemonic: It checks for the first priority player name and removes the rest of the players. This is usefull when spotify and mpd are both running
 
-	if [[ "$PLAYER" = "Playing" ]]; then
-		echo "Now Playing - via ${PLAYER_NAME^}"
-	else
-		echo "Music"
-	fi
+	PLAYER_NAME=$(playerctl -p $PLAYERS -l | head -n 1)
+	# Some browsers sometimes have ".instance(RANDOM_STRING)" in their names like Firefox. This removes the instance name.
+	PLAYER_NAME_SPLIT=($(echo $PLAYER_NAME | tr "." "\n"))
+	PLAYER_NAME_SPLIT=${PLAYER_NAME_SPLIT[0]}
+
+	[[ "$STATUS" = "Playing" ]] && echo "Now Playing - via ${PLAYER_NAME_SPLIT^}" || echo "Music"
 }
 
 position() {
-	POSITION=$(playerctl position | sed 's/..\{6\}$//')
-	DURATION=$(playerctl metadata mpris:length | sed 's/.\{6\}$//')
+	POSITION=$(playerctl -p $PLAYERS position | sed 's/..\{6\}$//')
+	DURATION=$(playerctl -p $PLAYERS metadata mpris:length | sed 's/.\{6\}$//')
 	
 	# Author Notes:
 	# Deathemonic: It check if the position is greater than 0 then execute the position if not just echo a empty space

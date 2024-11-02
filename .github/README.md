@@ -26,6 +26,11 @@
 
 <h2></h2>
 
+<!-- NOTICE -->
+## :warning: <samp>README</samp>
+
+   This repository is no longer actively maintained as I no longer use Linux for daily use. Use at your own risk.
+
 <!-- INFORMATION -->
 ## :herb: <samp>INFORMATION</samp> <img alt="" align="right" src="https://badges.pufler.dev/visits/janleigh/dotfiles?style=for-the-badge&color=A7D9B2&logoColor=white&labelColor=1C2325"/>
 
@@ -50,6 +55,29 @@
 
 <!-- SETUP -->
 ## :wrench: <samp>SETUP</samp>
+
+   <table align="right">
+   <tr>
+      <th align="center">
+         <sup><sub>:warning: WARNING :warning:</sub></sup>
+      </th>
+   </tr>
+   <tr>
+      <td align="center">
+         <sup>
+            <sub>
+               <samp>
+                  THIS DOTFILES IS CONFIGURED AT 1366x768 WITH 96 DPI!<br>
+                  SOME STUFF MIGHT BREAK ON LOWER OR HIGHER
+                  <p align="center">
+                     RESOLUTIONS BUT WILL STILL WORK!
+                  </p>
+               </samp>
+            </sub>
+         </sup>
+      </td>
+   </tr>
+   </table>
 
    This is step-by-step how to install these dotfiles. Just [R.T.F.M](https://en.wikipedia.org/wiki/RTFM).
 
@@ -141,12 +169,9 @@
    |    Font List     |  Use  |
    | :--------------: | :---: |
    | [`Sarasa Mono CL`](https://github.com/be5invis/Sarasa-Gothic) | Main Font |
-   | [`Roboto`](https://fonts.google.com/specimen/Roboto) | Secondary Main Font |
-   | [`Victor Mono`](https://github.com/rubjo/victor-mono) | Stylish Italic Font |
+   | [`Victor Mono`](https://github.com/rubjo/victor-mono) | Main Italic Font |
    | [`DM Sans`](https://fonts.google.com/specimen/DM+Sans) | Main UI Font |
-   | [`SF Pro Display`](https://developer.apple.com/fonts/) | Secondary UI Font |
    | [`Material Icons`](https://github.com/google/material-design-icons/) | Main Icon Font |
-   | [`Icomoon`](https://icomoon.io/) | Secondary Icon Font |
 
    > **NOTE**: Only important fonts has been listed on the table above.
 
@@ -296,6 +321,49 @@
       <img src="assets/colorscheme.png" alt="Colorscheme Showcase">
    </p>
 
+   <details>
+   <summary><strong>Xresources</strong></summary>
+
+   ```
+    ! special
+    *.foreground:   #c5c8c9
+    *.background:   #0B0F10
+
+    ! black
+    *.color0:       #101415
+    *.color8:       #131718
+
+    ! red
+    *.color1:       #df5b61
+    *.color9:       #ee6a70
+
+    ! green
+    *.color2:       #87c7a1
+    *.color10:      #96d6b0
+
+    ! yellow
+    *.color3:       #de8f78
+    *.color11:      #ffb29b
+
+    ! blue
+    *.color4:       #6791c9
+    *.color12:      #7ba5dd
+
+    ! magenta
+    *.color5:       #bc83e3
+    *.color13:      #cb92f2
+
+    ! cyan
+    *.color6:       #70b9cc
+    *.color14:      #7fc8db
+
+    ! white
+    *.color7:       #c4c4c4
+    *.color15:      #cccccc
+   ```
+
+   </details>
+
 ## :money_with_wings: <samp>TIP JAR</samp>
 
    If you enjoyed it and would like to show your appreciation, you may want to tip me here.
@@ -312,6 +380,7 @@
    - **Inspiration**
       - [`owl4ce`](https://github.com/owl4ce)
       - [`rxyhn`](https://github.com/rxyhn)
+      - [`Syndrizzle`](https://github.com/Syndrizzle)
 
    - **Contributors**
       - [`flyingcakes85`](https://github.com/flyingcakes85)
@@ -323,5 +392,5 @@
          </a>
 
 <p align="center">
-   <img src="https://raw.githubusercontent.com/catppuccin/catppuccin/dev/assets/footers/gray0_ctp_on_line.svg?sanitize=true"/>
+   <img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.svg?sanitize=true"/>
 </p>

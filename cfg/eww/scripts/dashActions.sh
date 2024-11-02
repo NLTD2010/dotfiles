@@ -6,26 +6,11 @@ EWW_BIN="$HOME/.local/bin/eww"
 AIRPLANE_MODE_LOCK_FILE="$HOME/.cache/airplane-mode.lock"
 DND_LOCK_FILE="$HOME/.cache/dnd-lock.lock"
 JEFF_LOCK_FILE="$HOME/.cache/jeff-lock.lock"
-
-hide_unhide_windows() {
-	while bspc node any.hidden.window -g hidden=off; do false; done && while bspc node 'any.!hidden.window' -g hidden=on; do :; done
-}
+FOCUSED_DESKTOP=$(bspc query -D -d focused --names)
 
 pre_run() {
 	if [[ -f "$HOME/.cache/eww-control-center.lock" ]]; then
-		${EWW_BIN} update ccenter=false
-		sleep 0.8
-		${EWW_BIN} close control-center
-		rm "$HOME/.cache/eww-control-center.lock"
-	fi
-
-	if [[ -f "$HOME/.cache/eww-escreen.lock" ]]; then
-		${EWW_BIN} update escreen=false
-		sleep 0.8
-		$HOME/.local/bin/tglbar
-		hide_unhide_windows
-		${EWW_BIN} close exit-screen
-		rm "$HOME/.cache/eww-escreen.lock"
+		sh "$HOME/.config/eww/scripts/openControlCenter.sh"
 	fi
 }
 
@@ -40,14 +25,14 @@ run_dnd() {
 }
 
 run_scrot() {
-	pre_run & sleep 0.8
+	pre_run && sleep 0.8
 
 	maim -us "$HOME/Pictures/Screenshots/$DATE";
 	sh $HOME/.local/bin/viewscr $HOME/Pictures/Screenshots/$DATE
 }
 
 run_giph() {
-	pre_run & sleep 0.8
+	pre_run && sleep 0.8
 
 	if [[ ! -f "$JEFF_LOCK_FILE" ]]; then
 		touch "$JEFF_LOCK_FILE"
@@ -60,16 +45,29 @@ run_giph() {
 	fi
 }
 
-run_suspend() {
-	pre_run && sleep 0.8
-
-	systemctl suspend
+run_am() {
+	if [[ ! -f "$AIRPLANE_MODE_LOCK_FILE" ]]; then
+		touch "$AIRPLANE_MODE_LOCK_FILE"
+		rfkill block wlan
+		rfkill block bluetooth
+	else
+		rm "$AIRPLANE_MODE_LOCK_FILE"
+		rfkill unblock wlan
+		rfkill unblock bluetooth
+	fi
 }
 
-run_hibernate() {
-	pre_run && sleep 0.8
+run_ocd() {
+	pre_run && sleep 0.2
+	xdg-open "$HOME/.config/eww"
+}
 
-	systemctl hibernate
+move_to_desktop() {
+	if [[ $1 == "up" ]]; then
+		[[ $FOCUSED_DESKTOP != "5" ]] && bspc desktop -f ^$((FOCUSED_DESKTOP + 1)) || bspc desktop -f ^1
+	elif [[ $1 == "down" ]]; then
+		[[ $FOCUSED_DESKTOP != "1" ]] && bspc desktop -f ^$((FOCUSED_DESKTOP - 1)) || bspc desktop -f ^5
+	fi
 }
 
 case $1 in
@@ -82,16 +80,32 @@ case $1 in
 	"jeff")
 		run_giph &
 		;;
+	"am")
+		run_am
+		;;
 	"dndstat")
 		[[ ! -f "$DND_LOCK_FILE" ]] && echo "$bgSecondary" || echo "#1c2325"
 		;;
 	"jstat")
 		[[ ! -f "$JEFF_LOCK_FILE" ]] && echo "$bgSecondary" || echo "#1c2325"
 		;;
-	"suspend")
-		run_suspend &
+	"amstat")
+		[[ ! -f "$AIRPLANE_MODE_LOCK_FILE" ]] && echo "" || echo ""
 		;;
-	"hibernate")
-		run_hibernate &
+	"ocd")
+		run_ocd &
+		;;
+	"clrnotf")
+		pkill dunst && sleep 0.6 && ${EWW_BIN} update reveal_no_notification_text=true
+		;;
+	"clntfpop")
+		${EWW_BIN} update noti=false && sleep 0.275; ${EWW_BIN} close notification-popup; ${EWW_BIN} update has_another_notif=false; pkill openEwwPopup.sh
+		rm "$HOME/.cache/eww-notif-popup.lock"
+		;;
+	"up")
+		move_to_desktop "up"
+		;;
+	"down")
+		move_to_desktop "down"
 		;;
 esac
